@@ -1,0 +1,81 @@
+#version 330 core
+
+out vec4 FragColor;
+
+in VertexOutput {
+    vec3 fragmentPosition;
+    vec2 textureCoordinates;
+    vec3 tangentLightSourcePosition;
+
+    vec3 tangentLightSourceDIR1;
+    vec3 tangentLightSourceDIR2;
+    vec3 tangentLightSourceDIR3;
+    vec3 tangentLightSourceDIR4;
+
+
+
+    vec3 tangentViewPosition;
+    vec3 tangentFragmentPosition;
+} fragmentInput;
+
+uniform sampler2D diffuseMap;
+uniform sampler2D normalMap;
+
+uniform vec3 zenia1;
+uniform vec3 zenia2;
+uniform vec3 zenia3;
+uniform vec3 zenia4;
+
+uniform vec3 lightSourcePosition;
+uniform vec3 viewPosition;
+
+uniform vec3 entasi;
+uniform vec3 entasi2;
+
+void main()
+{           
+     // obtain normal from normal map in range [0,1]
+    vec3 normal = texture(normalMap, fragmentInput.textureCoordinates).rgb;
+    // transform normal vector to range [-1,1]
+    normal = normalize(normal * 2.0 - 1.0);  // this normal is in tangent space
+   
+    // get diffuse color
+    vec3 color = texture(diffuseMap, fragmentInput.textureCoordinates).rgb;
+    // ambient
+    vec3 ambient = 0.1 * color;
+    // diffuse
+    vec3 lightDir = normalize(fragmentInput.tangentLightSourcePosition - fragmentInput.tangentFragmentPosition);
+    float diff = max(dot(lightDir, normal), 0.0);
+
+     float diff1 = max(dot( normalize(-fragmentInput.tangentLightSourceDIR1), normal), 0.0);
+     float diff2 = max(dot(normalize(-fragmentInput.tangentLightSourceDIR2), normal), 0.0);
+     float diff3 = max(dot(normalize(-fragmentInput.tangentLightSourceDIR3), normal), 0.0);
+     float diff4 = max(dot(normalize(-fragmentInput.tangentLightSourceDIR4), normal), 0.0);
+
+     vec3 diffuse1 = diff1 * color* entasi;
+     vec3 diffuse2 = diff2 * color* entasi;
+     vec3 diffuse3 = diff3 * color* entasi;
+     vec3 diffuse4 = diff4 * color* entasi;
+
+
+    vec3 diffuse = diff * color*entasi2;
+    // specular
+    vec3 viewDir = normalize(fragmentInput.tangentViewPosition - fragmentInput.tangentFragmentPosition);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+
+    vec3 specular = vec3(0.2) * spec;
+
+
+    vec3 mapping =ambient + diffuse + specular;
+
+    vec3 dir= diffuse1 + diffuse2  + diffuse3 + diffuse4;
+
+
+
+
+
+    FragColor = vec4(mapping +dir, 1.0);
+}
+

@@ -1,0 +1,62 @@
+#version 330 core
+
+layout (location = 0) in vec3 inputPosition;
+layout (location = 1) in vec3 inputNormal;
+layout (location = 2) in vec2 inputTextureCoordinates;
+layout (location = 3) in vec3 inputTangent;
+layout (location = 4) in vec3 inputBitangent;
+
+out VertexOutput {
+    vec3 fragmentPosition;
+    vec2 textureCoordinates;
+    vec3 tangentLightSourcePosition;
+
+     vec3 tangentLightSourceDIR1;
+     vec3 tangentLightSourceDIR2;
+     vec3 tangentLightSourceDIR3;
+     vec3 tangentLightSourceDIR4;
+
+    vec3 tangentViewPosition;
+    vec3 tangentFragmentPosition;
+} vertexOutput;
+
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 lightSourcePosition;
+uniform vec3 viewPosition;
+
+uniform vec3 zenia1;
+uniform vec3 zenia2;
+uniform vec3 zenia3;
+uniform vec3 zenia4;
+
+void main()
+{
+    vertexOutput.fragmentPosition = vec3(model * vec4(inputPosition, 1.0));   
+    vertexOutput.textureCoordinates = inputTextureCoordinates;
+    
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    vec3 T = normalize(normalMatrix * inputTangent);
+    vec3 N = normalize(normalMatrix * inputNormal);
+    T = normalize(T - dot(T, N) * N);
+    vec3 B = cross(N, T);
+    
+    mat3 TBN = transpose(mat3(T, B, N)); 
+    
+
+    vertexOutput.tangentLightSourcePosition = TBN * lightSourcePosition;
+
+    vertexOutput.tangentLightSourceDIR1 = TBN * zenia1;
+    vertexOutput.tangentLightSourceDIR2 = TBN * zenia2;
+    vertexOutput.tangentLightSourceDIR3 = TBN * zenia3;
+    vertexOutput.tangentLightSourceDIR4 = TBN * zenia4;
+
+
+    vertexOutput.tangentViewPosition  = TBN * viewPosition;
+    vertexOutput.tangentFragmentPosition  = TBN * vertexOutput.fragmentPosition;
+        
+    gl_Position = projection * view * model * vec4(inputPosition, 1.0);
+}
+
