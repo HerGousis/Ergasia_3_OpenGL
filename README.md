@@ -9,21 +9,21 @@
 5. Παρακάτω υπάρχουν είκονες απο το αποτελέσμα της ασκήσης :
 
 <div style="text-align:center;">
-    <img src="Ergasia_3_OpenGL/src/ask.PNG" alt="ask1" width="800">
+    <img src="Ergasia_3_OpenGL/src/ask.png" alt="ask1" width="800">
 </div>
 
 <div style="text-align:center;">
-    <img src="Ergasia_3_OpenGL/src/aska.PNG" alt="aska" width="800">
+    <img src="Ergasia_3_OpenGL/src/aska.png" alt="aska" width="800">
 </div>
 
 <div style="text-align:center;">
-    <img src="Ergasia_3_OpenGL/src/askb.PNG" alt="askb" width="800">
+    <img src="Ergasia_3_OpenGL/src/askb.png" alt="askb" width="800">
 </div>
 
 <div style="text-align:center;">
-    <img src="Ergasia_3_OpenGL/src/askg.PNG" alt="askg" width="800">
+    <img src="Ergasia_3_OpenGL/src/askg.png" alt="askg" width="800">
 </div>
 
 <div style="text-align:center;">
-    <img src="Ergasia_3_OpenGL/src/aske.PNG" alt="aske" width="800">
+    <img src="Ergasia_3_OpenGL/src/aske.png" alt="aske" width="800">
 </div>
